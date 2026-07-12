@@ -9,6 +9,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { profile } from "@/lib/data";
+import { useBooted } from "@/components/BootSequence";
 
 const codeLines = [
   `const developer = {`,
@@ -22,12 +23,14 @@ const codeLines = [
   `};`,
 ];
 
-function useTypewriter() {
+/** Typewriter that only starts once the boot sequence has handed off. */
+function useTypewriter(active: boolean) {
   const [visibleLines, setVisibleLines] = useState(0);
   const [visibleChars, setVisibleChars] = useState(0);
   const [done, setDone] = useState(false);
 
   useEffect(() => {
+    if (!active) return;
     if (visibleLines >= codeLines.length) {
       setDone(true);
       return;
@@ -42,7 +45,7 @@ function useTypewriter() {
       setVisibleChars(0);
     }, 220);
     return () => clearTimeout(t);
-  }, [visibleChars, visibleLines]);
+  }, [active, visibleChars, visibleLines]);
 
   return { visibleLines, visibleChars, done };
 }
@@ -100,7 +103,8 @@ function TiltCard({
 }
 
 export default function Hero() {
-  const { visibleLines, visibleChars, done } = useTypewriter();
+  const booted = useBooted();
+  const { visibleLines, visibleChars, done } = useTypewriter(booted);
 
   return (
     <section
@@ -114,7 +118,7 @@ export default function Hero() {
       <div className="relative mx-auto grid max-w-6xl gap-16 px-6 py-16 md:grid-cols-2 md:items-center">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={booted ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="path-label mb-4">~/inicio</p>
@@ -159,7 +163,11 @@ export default function Hero() {
           {/* Floating terminal card overlapping the photo */}
           <motion.div
             initial={{ opacity: 0, y: 20, x: -10 }}
-            animate={{ opacity: 1, y: 0, x: 0 }}
+            animate={
+              booted
+                ? { opacity: 1, y: 0, x: 0 }
+                : { opacity: 0, y: 20, x: -10 }
+            }
             transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="absolute -bottom-8 -left-6 w-[92%] max-w-[280px] sm:-left-10"
           >
@@ -211,13 +219,23 @@ export default function Hero() {
   );
 }
 
+/**
+ * Progressive "rendering" reveal for the profile photo:
+ * 1) the image itself sharpens from a heavy blur/desaturated state
+ * 2) alternating horizontal strips wipe away like blinds, left/right,
+ *    staggered top to bottom — mimicking a screen drawing line by line
+ * 3) a glowing scan line sweeps down in sync with the strips
+ */
 function PhotoReveal() {
+  const booted = useBooted();
   const [revealed, setRevealed] = useState(false);
+  const stripCount = 12;
 
   useEffect(() => {
-    const t = setTimeout(() => setRevealed(true), 250);
+    if (!booted) return;
+    const t = setTimeout(() => setRevealed(true), 150);
     return () => clearTimeout(t);
-  }, []);
+  }, [booted]);
 
   return (
     <div className="relative h-full w-full">
@@ -228,31 +246,58 @@ function PhotoReveal() {
         </span>
       </div>
 
-      <Image
-        src={profile.photo}
-        alt={profile.photoAlt}
-        fill
-        priority
-        sizes="(max-width: 768px) 90vw, 420px"
-        className="object-cover grayscale-[15%]"
-        onError={(e) => {
-          (e.currentTarget as HTMLImageElement).style.opacity = "0";
-        }}
-      />
+      <motion.div
+        initial={{ filter: "blur(24px) saturate(0.3)", opacity: 0, scale: 1.08 }}
+        animate={
+          revealed
+            ? { filter: "blur(0px) saturate(1)", opacity: 1, scale: 1 }
+            : {}
+        }
+        transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+        className="absolute inset-0"
+      >
+        <Image
+          src={profile.photo}
+          alt={profile.photoAlt}
+          fill
+          priority
+          sizes="(max-width: 768px) 90vw, 420px"
+          className="object-cover grayscale-[15%]"
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).style.opacity = "0";
+          }}
+        />
+      </motion.div>
 
-      {/* Blueprint scan-line sweep reveal */}
+      {/* Line-by-line "render" strips */}
+      <div className="pointer-events-none absolute inset-0 z-20 flex flex-col">
+        {Array.from({ length: stripCount }).map((_, i) => (
+          <motion.div
+            key={i}
+            initial={{ scaleX: 1 }}
+            animate={revealed ? { scaleX: 0 } : {}}
+            transition={{
+              duration: 0.45,
+              delay: 0.2 + i * 0.055,
+              ease: [0.65, 0, 0.35, 1],
+            }}
+            style={{
+              transformOrigin: i % 2 === 0 ? "left" : "right",
+              height: `${100 / stripCount}%`,
+            }}
+            className="w-full bg-blueprint-darker"
+          />
+        ))}
+      </div>
+
+      {/* Scan line sweeping down as the strips clear */}
       <motion.div
-        initial={{ y: "0%" }}
-        animate={{ y: revealed ? "-100%" : "0%" }}
-        transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
-        className="pointer-events-none absolute inset-0 z-20 bg-blueprint-darker"
-      />
-      <motion.div
-        initial={{ y: "0%" }}
-        animate={{ y: revealed ? "-100%" : "0%" }}
-        transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
-        className="pointer-events-none absolute inset-x-0 z-30 h-[3px] bg-cyan-signal shadow-[0_0_20px_4px_rgba(94,200,216,0.6)]"
-        style={{ top: "calc(100% - 3px)" }}
+        initial={{ top: "0%", opacity: 0 }}
+        animate={
+          revealed ? { top: "100%", opacity: [0, 1, 1, 0] } : { opacity: 0 }
+        }
+        transition={{ duration: 1.05, delay: 0.2, ease: "linear" }}
+        className="pointer-events-none absolute inset-x-0 z-30 h-[2px] bg-cyan-signal shadow-[0_0_16px_3px_rgba(94,200,216,0.7)]"
       />
 
       {/* Corner readout, puramente decorativo — reforça o motivo blueprint */}
@@ -272,14 +317,22 @@ function FloatingChip({
   className?: string;
   delay?: number;
 }) {
+  const booted = useBooted();
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1, y: [0, -8, 0] }}
+      animate={
+        booted
+          ? { opacity: 1, scale: 1, y: [0, -8, 0] }
+          : { opacity: 0, scale: 0.8 }
+      }
       transition={{
         opacity: { duration: 0.5, delay },
         scale: { duration: 0.5, delay },
-        y: { duration: 4, repeat: Infinity, ease: "easeInOut", delay },
+        y: booted
+          ? { duration: 4, repeat: Infinity, ease: "easeInOut", delay }
+          : { duration: 0 },
       }}
       className={`absolute z-20 items-center rounded-sm border border-cyan-signal/25 bg-blueprint-darker/90 px-3 py-1.5 font-mono text-[11px] text-cyan-signal shadow-lg shadow-black/30 backdrop-blur ${className}`}
     >

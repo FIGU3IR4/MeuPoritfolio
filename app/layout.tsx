@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import BootSequence from "@/components/BootSequence";
 
 export const metadata: Metadata = {
   title: "Seu Nome | Desenvolvedor(a) Full-Stack",
@@ -26,7 +27,9 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="font-body antialiased">{children}</body>
+      <body className="font-body antialiased">
+        <BootSequence>{children}</BootSequence>
+      </body>
     </html>
   );
 }

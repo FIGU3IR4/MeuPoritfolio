@@ -1,7 +1,4 @@
-// ─────────────────────────────────────────────────────────────
-// Todos os textos e conteúdos do site ficam centralizados aqui.
-// Edite os valores abaixo para transformar o site no seu portfólio.
-// ─────────────────────────────────────────────────────────────
+import foto from ""
 
 export const profile = {
   name: "Victor Figueira",
@@ -10,6 +7,7 @@ export const profile = {
   secondaryStack: "Java · Spring Boot · PostgreSQL",
   location: "Sua Cidade, Brasil",
   availability: "Disponível para novos projetos",
+ photo: "/foto.jpg",
   email: "victorgfigueira@gmail.com",
   linkedin: {
     label: "linkedin.com/in/figu3ir4",
