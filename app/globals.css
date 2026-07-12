@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --scroll-behavior: smooth;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0e2a3d;
+  color: #eaf2f5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Blueprint grid backdrop */
+.blueprint-grid {
+  background-image:
+    linear-gradient(rgba(94, 200, 216, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(94, 200, 216, 0.09) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.blueprint-grid-fine {
+  background-image:
+    linear-gradient(rgba(94, 200, 216, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(94, 200, 216, 0.05) 1px, transparent 1px);
+  background-size: 8px 8px;
+}
+
+/* Technical drawing corner brackets */
+.corner-frame {
+  position: relative;
+}
+
+.corner-frame::before,
+.corner-frame::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: #5ec8d8;
+  opacity: 0.6;
+  transition: opacity 0.25s ease;
+}
+
+.corner-frame::before {
+  top: -1px;
+  left: -1px;
+  border-top: 1.5px solid;
+  border-left: 1.5px solid;
+}
+
+.corner-frame::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 1.5px solid;
+  border-right: 1.5px solid;
+}
+
+.corner-frame:hover::before,
+.corner-frame:hover::after {
+  opacity: 1;
+  width: 20px;
+  height: 20px;
+}
+
+/* Eyebrow / breadcrumb label, e.g. ~/sobre */
+.path-label {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  color: #5ec8d8;
+}
+
+.path-label::before {
+  content: "";
+  color: #7c97a6;
+}
+
+/* Cursor blink used in the terminal signature element */
+.cursor-blink {
+  display: inline-block;
+  width: 0.55ch;
+  background-color: #f2a65a;
+  animation: blink 1s step-end infinite;
+}
+
+/* Section number ticks along the left rail on desktop */
+.rail-tick {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.7rem;
+  color: #7c97a6;
+}
+
+::selection {
+  background-color: #5ec8d8;
+  color: #081c29;
+}
+
+/* Focus visibility for accessibility */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #f2a65a;
+  outline-offset: 3px;
+}
