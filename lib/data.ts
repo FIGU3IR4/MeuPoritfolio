@@ -1,4 +1,3 @@
-import foto from ""
 
 export const profile = {
   name: "Victor Figueira",
@@ -8,6 +7,7 @@ export const profile = {
   location: "Sua Cidade, Brasil",
   availability: "Disponível para novos projetos",
  photo: "/foto.jpg",
+  photoAlt:"minha foto",
   email: "victorgfigueira@gmail.com",
   linkedin: {
     label: "linkedin.com/in/figu3ir4",
