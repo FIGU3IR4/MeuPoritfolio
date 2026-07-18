@@ -169,7 +169,7 @@ export default function Hero() {
                 : { opacity: 0, y: 20, x: -10 }
             }
             transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute -bottom-8 -left-6 w-[92%] max-w-[280px] sm:-left-10"
+            className="absolute -bottom-8 -left-6 w-[100%] max-w-[550px] sm:-left-10"
           >
             <TiltCard
               strength={5}

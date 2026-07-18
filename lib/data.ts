@@ -4,7 +4,7 @@ export const profile = {
   role: "Desenvolvedor(a) Full-Stack",
   stackHighlight: "Next.js · TypeScript · Node.js · Java",
   secondaryStack: "Java · Spring Boot · PostgreSQL",
-  location: "Sua Cidade, Brasil",
+  location: "Recife, Brasil",
   availability: "Disponível para novos projetos",
  photo: "/foto.jpg",
   photoAlt:"minha foto",
@@ -130,36 +130,36 @@ export const services = [
     title: "Landing Pages",
     tagline: "Páginas com foco em conversão",
     description:
-      "Descreva o tipo de landing page que você constrói e para qual objetivo (captar leads, vender um serviço, etc.).",
+      "Desenvolvimento de páginas estáticas de alta performance focadas em captar leads e alavancar vendas. Crio experiências visuais impactantes com animações fluidas para prender a atenção do usuário desde o primeiro segundo.",
     bullets: [
-      "Performance e SEO técnico",
-      "Design responsivo",
+      "Performance extrema e SEO técnico",
+      "Animações e interações modernas",
       "Integração com formulários e WhatsApp",
     ],
-    tags: ["Next.js", "React", "SEO"],
+    tags: ["Next.js", "Framer Motion", "Tailwind CSS"],
   },
   {
     title: "Sites Institucionais",
     tagline: "Presença digital para empresas",
     description:
-      "Descreva o tipo de site institucional que você desenvolve, com quais integrações e diferenciais.",
+      "Construção de sites profissionais para posicionar sua marca de forma sólida na internet. Estrutura moderna, carregamento ultrarrápido e design totalmente adaptável para transmitir autoridade ao seu cliente.",
     bullets: [
-      "Formulário de contato funcional",
-      "Estrutura pensada para SEO local",
-      "Painel de fácil atualização",
+      "Design totalmente responsivo (Mobile First)",
+      "Estrutura otimizada para o Google (SEO local)",
+      "Acessibilidade e navegação intuitiva",
     ],
-    tags: ["React", "Next.js", "Node.js"],
+    tags: ["React", "Next.js", "TypeScript"],
   },
   {
     title: "Sistemas Web",
     tagline: "Aplicações sob medida",
     description:
-      "Descreva o tipo de sistema (gestão, dashboard, SaaS) que você constrói e sua arquitetura típica.",
+      "Desenvolvimento de aplicações web complexas, como dashboards, painéis administrativos e plataformas (SaaS). Código limpo, tipado e escalável para garantir segurança e facilitar manutenções futuras.",
     bullets: [
+      "Interfaces dinâmicas e reativas",
       "Autenticação e controle de acesso",
-      "Dashboards e relatórios",
-      "Integração com APIs externas",
+      "Integração com APIs externas e Banco de Dados",
     ],
-    tags: ["TypeScript", "PostgreSQL", "APIs REST"],
+    tags: ["TypeScript", "Next.js", "Node.js"],
   },
 ];

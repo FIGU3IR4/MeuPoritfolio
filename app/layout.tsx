@@ -3,9 +3,9 @@ import "./globals.css";
 import BootSequence from "@/components/BootSequence";
 
 export const metadata: Metadata = {
-  title: "Seu Nome | Desenvolvedor(a) Full-Stack",
+  title: "FIGU3IR4 | Desenvolvedor(a) Full-Stack",
   description:
-    "Portfólio de Seu Nome — Desenvolvedor(a) Full-Stack focado(a) em construir produtos digitais sólidos, do front-end ao back-end.",
+    "Portfólio de Victor Figueira — Desenvolvedor(a) Full-Stack focado(a) em construir produtos digitais sólidos, do front-end ao back-end.",
 };
 
 export default function RootLayout({
